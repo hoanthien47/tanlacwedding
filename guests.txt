@@ -1,0 +1,7 @@
+1|Anh|Nguyễn Văn A|Bạn thân chú rể
+2|Chị|Trần Thị B|Đồng nghiệp cô dâu
+3|Bạn|Phạm Minh Đức|Bạn thời đại học
+4|Chú|Lê Hoàng Nam|Đại diện họ nhà trai
+5|Cô|Nguyễn Thanh Hà|Đại diện họ nhà gái
+6|Gia đình|Anh Chị Tiến Dũng|Đồng nghiệp chú rể
+7|Em|Hoàng Thu Thảo|Em họ cô dâu
