@@ -538,9 +538,97 @@ img {
     letter-spacing: 1px;
 }
 
-/* --- 4. COUPLE PROFILE SECTION --- */
-.couple-section {
-    background: linear-gradient(180deg, var(--bg-cream), rgba(212,175,55,0.05), var(--bg-cream));
+/* --- INVITATION LETTER --- */
+.invitation-letter {
+    max-width: 700px;
+    margin: 60px auto 0;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    border-radius: 20px;
+    padding: 50px 55px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 12px 35px rgba(224, 122, 138, 0.08), 0 4px 12px rgba(212, 175, 55, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.invitation-deco {
+    font-size: 1.5rem;
+    color: var(--accent-gold);
+    margin-bottom: 12px;
+    display: block;
+    opacity: 0.7;
+}
+
+.invitation-deco.bottom {
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+.invitation-label {
+    font-family: var(--font-title);
+    font-size: 1.1rem;
+    letter-spacing: 8px;
+    color: var(--primary-color);
+    margin-bottom: 16px;
+}
+
+.invitation-divider {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--accent-gold), transparent);
+    margin: 0 auto 28px;
+}
+
+.invitation-body {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--text-muted);
+    line-height: 1.9;
+    margin-bottom: 16px;
+}
+
+.invitation-body:first-of-type {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-style: normal;
+}
+
+.invitation-signature {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: 28px;
+    font-family: var(--font-handwrite);
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+.invitation-signature i {
+    color: var(--primary-light);
+    font-size: 1.1rem;
+    animation: heartPulse 1.5s infinite alternate;
+}
+
+/* --- MUSIC PLAYER ENHANCEMENTS --- */
+#music-player-ctrl {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+}
+.track-label {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    margin-right: 8px;
+}
+/* Adjust next button icon size */
+#btn-next-track i {
+    font-size: 1.2rem;
 }
 
 .couple-grid {

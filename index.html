@@ -21,7 +21,7 @@
 <body>
 
     <!-- Background Music Audio -->
-    <audio id="wedding-music" loop preload="auto">
+    <audio id="wedding-music" preload="auto">
         <source src="cuoidi.mp3" type="audio/mp3">
     </audio>
 
@@ -59,8 +59,12 @@
             <span class="bar"></span>
             <span class="bar"></span>
         </div>
-        <button id="btn-music-toggle" class="btn-music" aria-label="Mute/Unmute Music">
+        <span id="track-label" class="track-label">Nhạc nền</span>
+        <button id="btn-music-toggle" class="btn-music" aria-label="Phát / Tạm dừng">
             <i class="fa-solid fa-music"></i>
+        </button>
+        <button id="btn-next-track" class="btn-music" aria-label="Chuyển bài">
+            <i class="fa-solid fa-forward-step"></i>
         </button>
     </div>
 
@@ -106,6 +110,29 @@
                         <span id="seconds" class="number">00</span>
                         <span class="label">Giây</span>
                     </div>
+                </div>
+
+                <!-- Invitation Letter -->
+                <div class="invitation-letter scroll-reveal">
+                    <div class="invitation-deco top"><i class="fa-solid fa-dove"></i></div>
+                    <p class="invitation-label">INVITATION</p>
+                    <div class="invitation-divider"></div>
+                    <p class="invitation-body">
+                        Gửi đến gia đình và bạn bè thân mến,
+                    </p>
+                    <p class="invitation-body">
+                        Cảm ơn bạn đã dành thời gian quý báu để cùng chúng mình chung vui trong ngày đặc biệt này.
+                        Chúng mình vô cùng biết ơn vì luôn có sự đồng hành và ủng hộ của bạn, và thật vinh hạnh khi được chia sẻ niềm hạnh phúc của chúng mình cùng bạn.
+                    </p>
+                    <p class="invitation-body">
+                        Trân trọng kính mời bạn đến dự lễ cưới của chúng mình.
+                    </p>
+                    <div class="invitation-signature">
+                        <span>Tấn Lạc</span>
+                        <i class="fa-solid fa-heart"></i>
+                        <span>Thiên Vân</span>
+                    </div>
+                    <div class="invitation-deco bottom"><i class="fa-solid fa-feather-pointed"></i></div>
                 </div>
             </div>
         </section>

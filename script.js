@@ -87,19 +87,53 @@ document.addEventListener('DOMContentLoaded', () => {
     const audio = document.getElementById('wedding-music');
     const btnMusicToggle = document.getElementById('btn-music-toggle');
 
+    // --- PLAYLIST: 3 bài hát ngẫu nhiên, không trùng liên tiếp ---
+    const playlist = [
+        { src: 'cuoidi.mp3',   title: 'Cưới Đi' },
+        { src: 'LeDuong.mp3',  title: 'Lê Đường' },
+        { src: 'motnha.mp3',   title: 'Một Nhà' }
+    ];
+
+    let currentTrackIndex = -1;
+
+    // Lấy bài ngẫu nhiên, không trùng với bài đang phát
+    function getNextRandomIndex() {
+        if (playlist.length === 1) return 0;
+        let next;
+        do {
+            next = Math.floor(Math.random() * playlist.length);
+        } while (next === currentTrackIndex);
+        return next;
+    }
+
+    function loadTrack(index) {
+        currentTrackIndex = index;
+        audio.src = playlist[index].src;
+        audio.load();
+
+        // Cập nhật tên bài hát trên player nếu có element
+        const trackLabel = document.getElementById('track-label');
+        if (trackLabel) trackLabel.textContent = playlist[index].title;
+    }
+
+    // Khi hết bài → chuyển bài mới ngẫu nhiên
+    audio.addEventListener('ended', () => {
+        const next = getNextRandomIndex();
+        loadTrack(next);
+        audio.play().catch(() => {});
+    });
+
     btnOpenInvitation.addEventListener('click', () => {
-        // 1. Phát nhạc nền
+        // Load bài đầu tiên ngẫu nhiên
+        loadTrack(getNextRandomIndex());
         playAudio();
 
-        // 2. Chuyển đổi màn hình (ẩn Cover, hiện Main)
         coverScreen.classList.add('dismissed');
         mainContent.classList.remove('hidden');
         
-        // Thêm delay nhẹ để transition CSS hoạt động mượt mà
         setTimeout(() => {
             mainContent.classList.add('visible');
             musicPlayerCtrl.classList.remove('hidden');
-            // Kích hoạt tính năng cuộn trang và hiển thị nội dung
             initScrollReveal();
         }, 100);
     });
@@ -131,6 +165,16 @@ document.addEventListener('DOMContentLoaded', () => {
             playAudio();
         }
     });
+
+    // Nút chuyển bài tiếp theo
+    const btnNextTrack = document.getElementById('btn-next-track');
+    if (btnNextTrack) {
+        btnNextTrack.addEventListener('click', () => {
+            const next = getNextRandomIndex();
+            loadTrack(next);
+            if (isPlaying) audio.play().catch(() => {});
+        });
+    }
 
     // 3. Countdown Timer (Đếm ngược)
     // Ngày cưới mục tiêu: 3 Tháng 7 năm 2026 lúc 16:00
