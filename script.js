@@ -283,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.target.classList.remove('active');
         }
     });
-
+    const RSVP_API = 'https://script.google.com/macros/s/AKfycbw8tgNL8ZEgSq2nBgl3PIP0FV5k_ZNGmGd6GTaAE4JIg2dLuO8UUDNspTm3UsJzb7rc6g/exec';
     // 7. Wishes Wall & RSVP Submission Logic (Lưu bút & Xác nhận tham dự)
     const rsvpForm = document.getElementById('rsvp-form');
     const rsvpSuccess = document.getElementById('rsvp-success');
@@ -338,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadWishes();
 
-    rsvpForm.addEventListener('submit', (e) => {
+    rsvpForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
         const name = document.getElementById('rsvp-name').value.trim();
@@ -351,47 +351,51 @@ document.addEventListener('DOMContentLoaded', () => {
         // Hiện hiệu ứng tải
         submitBtn.disabled = true;
         spinner.classList.remove('hidden');
+        try {
+
+    const guestId = currentGuest ? currentGuest.id : '';
+
+    const params = new URLSearchParams({
+        action: 'rsvp',
+        id: guestId,
+        name: name,
+        attend: attendance,
+        guestCount: guests,
+        message: message
+    });
+
+    console.log(params.toString());
+
+    const response = await fetch(
+        `${RSVP_API}?${params.toString()}`
+    );
+
+    const result = await response.json();
+
+    console.log(result);
+
+    if (!result.success) {
+        throw new Error(result.error || 'Gửi RSVP thất bại');
+    }
+
+    rsvpForm.classList.add('hidden');
+    rsvpSuccess.classList.remove('hidden');
+
+} catch (error) {
+
+    console.error(error);
+
+    alert(
+        'Không thể gửi xác nhận RSVP: ' +
+        error.message
+    );
+
+} finally {
+
+    submitBtn.disabled = false;
+    spinner.classList.add('hidden');
+}
         
-        // Giả lập gửi lên máy chủ trong 1.5 giây
-        setTimeout(() => {
-            // Lấy thời gian hiện tại để hiển thị
-            const now = new Date();
-            const timeString = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-            
-            // Xác định mối quan hệ từ currentGuest nếu có
-            let relation = 'Khách quý';
-            if (currentGuest && currentGuest.role) {
-                relation = currentGuest.role;
-            } else if (attendance === 'no') {
-                relation = 'Gửi lời chúc';
-            } else {
-                relation = 'Sẽ tham dự';
-            }
-
-            // Nếu khách hàng ghi lời chúc, lưu lại vào wishes wall
-            if (message) {
-                const newWish = {
-                    name: name,
-                    relation: relation,
-                    message: message,
-                    time: timeString
-                };
-                
-                let wishes = JSON.parse(localStorage.getItem('wedding_wishes')) || [];
-                wishes.push(newWish);
-                localStorage.setItem('wedding_wishes', JSON.stringify(wishes));
-                
-                // Cập nhật lại giao diện wishes wall
-                loadWishes();
-            }
-
-            // Ẩn form và hiện thông báo thành công
-            rsvpForm.classList.add('hidden');
-            rsvpSuccess.classList.remove('hidden');
-            
-            submitBtn.disabled = false;
-            spinner.classList.add('hidden');
-        }, 1500);
     });
 
     // 8. Canvas Gold Dust Particle System (Hiệu ứng nhũ vàng bay)
