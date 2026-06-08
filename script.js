@@ -235,9 +235,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxClose = document.querySelector('.lightbox-close');
 
-    // Mảng chứa các ảnh từ img5 đến img32 cần chèn thêm
+    // Mảng chứa các ảnh từ img5 đến img32 cần chèn thêm (loại trừ img9, img10, và img14 theo yêu cầu)
     const extraImages = [];
     for (let i = 5; i <= 32; i++) {
+        if (i === 9 || i === 10 || i === 14) continue;
         extraImages.push({
             src: `assets/img${i}.jpg`,
             alt: `Ảnh cưới ${i}`
@@ -490,12 +491,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
     });
 
-    // 8. Canvas Gold Dust Particle System (Hiệu ứng nhũ vàng bay)
+    // 8. Canvas Gold Dust & Heart Petals Falling Particle System (Hiệu ứng cánh hoa, nhũ vàng và trái tim rơi)
     const canvas = document.getElementById('dust-canvas');
     const ctx = canvas.getContext('2d');
 
     let particles = [];
-    const maxParticles = 60;
+    const maxParticles = 75; // Tăng một chút cho sinh động
 
     function resizeCanvas() {
         canvas.width = window.innerWidth;
@@ -511,12 +512,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         update() {
-            this.y += this.speedY;
+            this.y += this.speedY; // Rơi xuống (speedY dương)
             this.x += this.speedX;
             
-            if (this.type === 'petal') {
+            if (this.type === 'petal' || this.type === 'heart') {
                 this.rotation += this.rotationSpeed;
-                this.speedX = Math.sin(this.y * 0.01 + this.swayOffset) * 0.5;
+                this.speedX = Math.sin(this.y * 0.01 + this.swayOffset) * 0.6;
             } else {
                 this.speedX += Math.random() * 0.02 - 0.01;
             }
@@ -526,40 +527,61 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.reset();
             }
 
-            if (this.y < -20) {
+            // Nếu rơi quá đáy màn hình thì reset
+            if (this.y > canvas.height + 20) {
                 this.reset();
             }
         }
 
         reset(initial = false) {
             this.x = Math.random() * canvas.width;
-            this.y = initial ? Math.random() * canvas.height : canvas.height + 20;
-            this.type = Math.random() > 0.4 ? 'petal' : 'dust';
+            // Nếu khởi tạo lúc đầu thì cho phân bố ngẫu nhiên chiều cao, sau đó chỉ xuất hiện ở đỉnh màn hình
+            this.y = initial ? Math.random() * canvas.height : -20;
+            
+            // Random loại hạt: 40% nhũ vàng, 40% cánh hoa hồng, 20% trái tim rơi
+            const rand = Math.random();
+            if (rand < 0.4) {
+                this.type = 'dust';
+            } else if (rand < 0.8) {
+                this.type = 'petal';
+            } else {
+                this.type = 'heart';
+            }
             
             if (this.type === 'petal') {
                 this.size = Math.random() * 5 + 3;
-                this.speedY = Math.random() * -0.8 - 0.4;
+                this.speedY = Math.random() * 0.8 + 0.5; // Rơi xuống chậm rãi
                 this.speedX = Math.random() * 0.6 - 0.3;
                 this.rotation = Math.random() * 360;
                 this.rotationSpeed = Math.random() * 1.5 - 0.75;
                 this.swayOffset = Math.random() * 100;
-                const pinks = ['rgba(255, 209, 220, ', 'rgba(247, 185, 196, ', 'rgba(255, 228, 230, '];
+                const pinks = ['rgba(255, 182, 193, ', 'rgba(255, 192, 203, ', 'rgba(255, 218, 224, ', 'rgba(244, 143, 177, '];
                 this.colorBase = pinks[Math.floor(Math.random() * pinks.length)];
+            } else if (this.type === 'heart') {
+                this.size = Math.random() * 6 + 4; // Kích thước trái tim
+                this.speedY = Math.random() * 0.9 + 0.6; // Rơi xuống nhanh hơn cánh hoa một chút
+                this.speedX = Math.random() * 0.4 - 0.2;
+                this.rotation = Math.random() * 40 - 20; // Xoay nhẹ trái tim
+                this.rotationSpeed = Math.random() * 0.6 - 0.3;
+                this.swayOffset = Math.random() * 100;
+                const heartReds = ['rgba(224, 122, 138, ', 'rgba(240, 98, 146, ', 'rgba(255, 138, 128, ', 'rgba(255, 64, 129, '];
+                this.colorBase = heartReds[Math.floor(Math.random() * heartReds.length)];
             } else {
-                this.size = Math.random() * 2 + 1;
-                this.speedY = Math.random() * -0.5 - 0.2;
+                this.size = Math.random() * 2.2 + 0.8;
+                this.speedY = Math.random() * 0.5 + 0.3;
                 this.speedX = Math.random() * 0.4 - 0.2;
                 this.colorBase = 'rgba(212, 175, 55, ';
             }
             
-            this.alpha = Math.random() * 0.5 + 0.2;
-            this.alphaSpeed = Math.random() * 0.003 + 0.001;
+            this.alpha = Math.random() * 0.6 + 0.2;
+            this.alphaSpeed = Math.random() * 0.002 + 0.0005; // Giảm tốc độ biến mất để rơi được xa hơn
         }
 
         draw() {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            
             if (this.type === 'petal') {
-                ctx.save();
-                ctx.translate(this.x, this.y);
                 ctx.rotate(this.rotation * Math.PI / 180);
                 ctx.beginPath();
                 ctx.ellipse(0, 0, this.size * 1.4, this.size * 0.8, 0, 0, Math.PI * 2);
@@ -567,23 +589,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 ctx.shadowColor = 'rgba(247, 185, 196, 0.3)';
                 ctx.shadowBlur = 4;
                 ctx.fill();
-                ctx.restore();
+            } else if (this.type === 'heart') {
+                ctx.rotate(this.rotation * Math.PI / 180);
+                ctx.beginPath();
+                // Vẽ hình trái tim bằng Bezier Curves
+                const size = this.size;
+                ctx.moveTo(0, -size / 4);
+                // Nửa trái
+                ctx.bezierCurveTo(-size / 2, -size, -size * 1.2, -size / 3, 0, size * 1.1);
+                // Nửa phải
+                ctx.bezierCurveTo(size * 1.2, -size / 3, size / 2, -size, 0, -size / 4);
+                ctx.fillStyle = `${this.colorBase}${this.alpha})`;
+                ctx.shadowColor = 'rgba(224, 122, 138, 0.4)';
+                ctx.shadowBlur = 5;
+                ctx.fill();
             } else {
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.arc(0, 0, this.size, 0, Math.PI * 2);
                 ctx.fillStyle = `${this.colorBase}${this.alpha})`;
                 ctx.shadowColor = 'rgba(212, 175, 55, 0.4)';
                 ctx.shadowBlur = 3;
                 ctx.fill();
             }
+            ctx.restore();
         }
     }
 
     function initParticles() {
-        // Khởi tạo các hạt phân bố ngẫu nhiên khắp màn hình lúc đầu
         for (let i = 0; i < maxParticles; i++) {
             const p = new Particle();
-            p.y = Math.random() * canvas.height; // Phân bố đều lúc bắt đầu
+            p.y = Math.random() * canvas.height; // Phân bố đều khắp màn hình khi tải trang
             particles.push(p);
         }
     }
