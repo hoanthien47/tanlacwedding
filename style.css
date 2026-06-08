@@ -1027,6 +1027,20 @@ img {
     margin-top: 30px;
 }
 
+.gallery-item.hidden {
+    display: none !important;
+}
+
+.gallery-more-container {
+    text-align: center;
+    margin-top: 40px;
+}
+
+#btn-toggle-gallery {
+    min-width: 180px;
+    justify-content: center;
+}
+
 .gallery-item {
     position: relative;
     border-radius: 15px;
@@ -1625,4 +1639,9 @@ img {
         bottom: 20px;
         right: 20px;
     }
+}
+.copyright a {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
 }

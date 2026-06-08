@@ -150,7 +150,7 @@
                         <h3 class="couple-name">Tấn Lạc</h3>
                         <p class="couple-bio">Chàng trai bản lĩnh, chân thành và ấm áp. Luôn nỗ lực hết mình để xây dựng tổ ấm hạnh phúc vững bền cùng người thương.</p>
                         <div class="social-links">
-                            <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="https://www.facebook.com/LacLamLo" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
                             <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
                         </div>
                         <button class="btn-gift-modal btn-outline" data-target="groom-registry">
@@ -174,7 +174,7 @@
                         <h3 class="couple-name">Thiên Vân</h3>
                         <p class="couple-bio">Cô gái dịu dàng, nụ cười rạng rỡ và tràn đầy tình cảm. Luôn mang lại niềm vui, sự thấu hiểu và hạnh phúc cho mọi người.</p>
                         <div class="social-links">
-                            <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="https://www.facebook.com/bachvan0710" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
                             <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
                         </div>
                         <button class="btn-gift-modal btn-outline" data-target="bride-registry">
@@ -239,7 +239,7 @@
                         </div>
                         <p class="event-location-name">Thánh Đường Giáo Xứ Tân Rai</p>
                         <p class="event-address">Thị trấn Lộc Thắng, Huyện Bảo Lâm, Tỉnh Lâm Đồng</p>
-                        <a href="https://maps.google.com/?q=Giáo+xứ+Tân+Rai" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
+                        <a href="https://maps.app.goo.gl/AeEY4rre6v5o6EJL6" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
                             <i class="fa-solid fa-map-location-dot"></i> Xem Bản Đồ
                         </a>
                     </div>
@@ -259,7 +259,7 @@
                         </div>
                         <p class="event-location-name">Tư Gia Nhà Gái</p>
                         <p class="event-address">Khu vực Bảo Lâm, Tỉnh Lâm Đồng</p>
-                        <a href="https://maps.google.com" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
+                        <a href="https://maps.app.goo.gl/AY2d5NR2FfXExE8z7" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
                             <i class="fa-solid fa-map-location-dot"></i> Xem Bản Đồ
                         </a>
                     </div>
@@ -279,7 +279,7 @@
                         </div>
                         <p class="event-location-name">Tư Gia Nhà Trai</p>
                         <p class="event-address">Khu vực Bảo Lâm, Tỉnh Lâm Đồng</p>
-                        <a href="https://maps.google.com" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
+                        <a href="https://maps.app.goo.gl/cVsAVvNf6MdViHB56" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
                             <i class="fa-solid fa-map-location-dot"></i> Xem Bản Đồ
                         </a>
                     </div>
@@ -292,8 +292,7 @@
             <div class="container">
                 <h2 class="section-title">Album Ảnh Cưới</h2>
                 <p class="section-subtitle">Lưu giữ những khoảnh khắc hạnh phúc</p>
-                
-                <div class="gallery-grid">
+                <div class="gallery-grid" id="gallery-grid">
                     <div class="gallery-item scroll-reveal">
                         <img src="assets/img1.jpg" alt="Ảnh cưới 1" class="gallery-img">
                         <div class="gallery-overlay"><i class="fa-solid fa-expand"></i></div>
@@ -310,14 +309,12 @@
                         <img src="assets/img4.jpg" alt="Ảnh cưới 4" class="gallery-img">
                         <div class="gallery-overlay"><i class="fa-solid fa-expand"></i></div>
                     </div>
-                    <div class="gallery-item scroll-reveal">
-                        <img src="assets/img5.jpg" alt="Ảnh cưới 5" class="gallery-img">
-                        <div class="gallery-overlay"><i class="fa-solid fa-expand"></i></div>
-                    </div>
-                    <div class="gallery-item scroll-reveal">
-                        <img src="assets/img6.jpg" alt="Ảnh cưới 6" class="gallery-img">
-                        <div class="gallery-overlay"><i class="fa-solid fa-expand"></i></div>
-                    </div>
+                    <!-- Các hình ảnh ẩn từ img5 đến img32 sẽ được sinh tự động bằng JavaScript để tối ưu hoá mã HTML và dễ bảo trì -->
+                </div>
+                <div class="gallery-more-container">
+                    <button id="btn-toggle-gallery" class="btn btn-primary">
+                        <span>Xem thêm ảnh</span> <i class="fa-solid fa-chevron-down"></i>
+                    </button>
                 </div>
             </div>
         </section>
@@ -396,7 +393,12 @@
         <footer class="wedding-footer">
             <p class="footer-sign">Thank You</p>
             <p class="footer-names">Tấn Lạc & Thiên Vân</p>
-            <p class="copyright">&copy; 2026. Made with love for their special day.</p>
+            <p class="copyright">
+    &copy; 2026. Made with ❤️ by
+            <a href="https://Facebook.com/HoangThienJasonTee" target="_blank" rel="noopener noreferrer">
+                Hoàng Thiện
+            </a>.
+        </p>
         </footer>
 
     </div>

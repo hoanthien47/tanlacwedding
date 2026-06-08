@@ -228,20 +228,83 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. Image Lightbox Modal (Xem ảnh phóng to)
-    const galleryItems = document.querySelectorAll('.gallery-item');
+    // 5. Image Lightbox Modal & Dynamic Gallery Expansion
+    const galleryGrid = document.getElementById('gallery-grid');
+    const btnToggleGallery = document.getElementById('btn-toggle-gallery');
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxClose = document.querySelector('.lightbox-close');
 
-    galleryItems.forEach(item => {
+    // Mảng chứa các ảnh từ img5 đến img32 cần chèn thêm
+    const extraImages = [];
+    for (let i = 5; i <= 32; i++) {
+        extraImages.push({
+            src: `assets/img${i}.jpg`,
+            alt: `Ảnh cưới ${i}`
+        });
+    }
+
+    // Tạo các phần tử DOM cho các ảnh mới và ẩn đi
+    const extraElements = [];
+    extraImages.forEach(imgData => {
+        const item = document.createElement('div');
+        item.className = 'gallery-item extra-item hidden scroll-reveal';
+        item.innerHTML = `
+            <img src="${imgData.src}" alt="${imgData.alt}" class="gallery-img">
+            <div class="gallery-overlay"><i class="fa-solid fa-expand"></i></div>
+        `;
+        galleryGrid.appendChild(item);
+        extraElements.push(item);
+    });
+
+    // Hàm gắn bộ lắng nghe cho từng gallery item (hỗ trợ cả ảnh cũ và ảnh mới)
+    function attachLightboxListener(item) {
         item.addEventListener('click', () => {
             const img = item.querySelector('.gallery-img');
             lightboxImg.src = img.src;
             lightboxImg.alt = img.alt;
             lightbox.classList.add('active');
         });
-    });
+    }
+
+    // Đăng ký cho các item ban đầu (img1 -> img6)
+    const initialItems = document.querySelectorAll('.gallery-item:not(.extra-item)');
+    initialItems.forEach(attachLightboxListener);
+
+    // Đăng ký cho các extra items
+    extraElements.forEach(attachLightboxListener);
+
+    // Xử lý nút Xem thêm / Thu gọn
+    let isExpanded = false;
+    if (btnToggleGallery) {
+        btnToggleGallery.addEventListener('click', () => {
+            isExpanded = !isExpanded;
+            extraElements.forEach(el => {
+                if (isExpanded) {
+                    el.classList.remove('hidden');
+                    // Kích hoạt scroll-reveal ngay lập tức cho các ảnh hiển thị
+                    setTimeout(() => el.classList.add('revealed'), 50);
+                } else {
+                    el.classList.add('hidden');
+                    el.classList.remove('revealed');
+                }
+            });
+
+            const btnText = btnToggleGallery.querySelector('span');
+            const btnIcon = btnToggleGallery.querySelector('i');
+            if (isExpanded) {
+                btnText.textContent = 'Thu gọn';
+                btnIcon.className = 'fa-solid fa-chevron-up';
+                // Cuộn mượt đến chỗ bắt đầu của các ảnh thêm vào
+                extraElements[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                btnText.textContent = 'Xem thêm ảnh';
+                btnIcon.className = 'fa-solid fa-chevron-down';
+                // Cuộn mượt về đầu phần Album ảnh cưới
+                document.getElementById('gallery-section').scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
 
     lightboxClose.addEventListener('click', () => {
         lightbox.classList.remove('active');
