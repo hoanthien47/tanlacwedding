@@ -303,38 +303,66 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Một vài lời chúc mẫu để trang web trông sinh động ngay khi mới tải
-    const defaultWishes = [
-        { name: "Anh Nam", relation: "Bạn thân chú rể", message: "Chúc Lạc và Vân trăm năm hạnh phúc, răng long đầu bạc nhé! Tiệc cưới hoành tráng quá.", time: "07/06/2026 14:30" },
-        { name: "Chị Thảo", relation: "Em họ cô dâu", message: "Chúc hai bạn luôn ngọt ngào như những ngày đầu. Em rất mong chờ đến ngày cưới!", time: "07/06/2026 15:45" },
-        { name: "Tiến Dũng", relation: "Đồng nghiệp chú rể", message: "Chúc mừng ngày song hỷ lâm môn! Chúc vợ chồng son gặp nhiều may mắn và thành công trên chặng đường mới.", time: "07/06/2026 18:20" }
-    ];
 
-    function loadWishes() {
-        let wishes = JSON.parse(localStorage.getItem('wedding_wishes'));
-        if (!wishes) {
-            wishes = defaultWishes;
-            localStorage.setItem('wedding_wishes', JSON.stringify(wishes));
+    async function loadWishes() {
+
+    try {
+
+        const response = await fetch(
+            `${RSVP_API}?action=wishes`
+        );
+
+        const result = await response.json();
+
+        if (!result.success) {
+            return;
         }
-        
+
         wishesWall.innerHTML = '';
-        // Hiển thị lời chúc mới nhất lên đầu
-        wishes.slice().reverse().forEach(wish => {
-            const card = document.createElement('div');
-            card.className = 'wish-card';
-            
-            const relationBadge = wish.relation ? `<span class="wish-relation">${wish.relation}</span>` : '';
-            
-            card.innerHTML = `
-                <div class="wish-header">
-                    <span class="wish-sender">${wish.name}</span>
-                    ${relationBadge}
-                </div>
-                <p class="wish-content">"${wish.message}"</p>
-                <div class="wish-time">${wish.time}</div>
-            `;
-            wishesWall.appendChild(card);
-        });
+
+        result.wishes
+            .reverse()
+            .forEach(wish => {
+
+                if (!wish.message) return;
+
+                const card = document.createElement('div');
+
+                card.className = 'wish-card';
+
+                card.innerHTML = `
+                    <div class="wish-header">
+                        <span class="wish-sender">
+                            ${wish.name || 'Khách quý'}
+                        </span>
+
+                        <span class="wish-relation">
+                            ${wish.attend === 'yes'
+                                ? 'Sẽ tham dự'
+                                : 'Gửi lời chúc'}
+                        </span>
+                    </div>
+
+                    <p class="wish-content">
+                        "${wish.message}"
+                    </p>
+
+                    <div class="wish-time">
+                        ${new Date(wish.time).toLocaleString('vi-VN')}
+                    </div>
+                `;
+
+                wishesWall.appendChild(card);
+            });
+
+    } catch (error) {
+
+        console.error(
+            'Không tải được lời chúc',
+            error
+        );
     }
+}
 
     loadWishes();
 
@@ -380,6 +408,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     rsvpForm.classList.add('hidden');
     rsvpSuccess.classList.remove('hidden');
+    await loadWishes();
 
 } catch (error) {
 
