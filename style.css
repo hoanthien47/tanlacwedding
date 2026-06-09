@@ -215,7 +215,7 @@ img {
 
 .wedding-date-short {
     font-family: var(--font-heading);
-    font-size: 1.3rem;
+    font-size: 2.5rem;
     letter-spacing: 3px;
     color: var(--accent-gold-light);
     margin-bottom: 30px;
@@ -258,7 +258,7 @@ img {
 
 /* Button Open Invitation */
 .btn-open {
-    background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-dark));
+    background: linear-gradient(135deg, #ffd345);
     color: var(--primary-dark);
     border: none;
     padding: 16px 36px;
